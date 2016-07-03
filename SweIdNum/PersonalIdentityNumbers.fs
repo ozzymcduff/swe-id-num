@@ -22,6 +22,7 @@ module PersonalIdentityNumbers=
         ]
     type ParseMessage=
         | DoesNotMatchFormat
+    let minusOrPlus = Regex("[+-]")
 
     [<CompiledName("Parse")>]
     let parse (pin:string) : Choice<PersonalIdentityNumber, ParseMessage>=
@@ -32,18 +33,14 @@ module PersonalIdentityNumbers=
             else
                 None
 
+        let replaceMinusAndPlus (v)=
+            minusOrPlus.Replace(v, "")
+
         let maybeM = formats |> List.tryPick matchFormat 
 
-        let getCaptured (captures:CaptureCollection)=
-            seq{
-                for c in captures do
-                    yield c.Value
-            }
-            |> System.String.Concat
-        
         match maybeM with
         | Some m ->
-            Choice1Of2 {PIN=getCaptured( m.Captures ) }
+            Choice1Of2 {PIN= replaceMinusAndPlus(m.Value) }
         | None ->
             Choice2Of2 DoesNotMatchFormat
 
