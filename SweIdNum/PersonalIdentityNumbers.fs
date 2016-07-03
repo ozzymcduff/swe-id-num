@@ -58,7 +58,7 @@ module PersonalIdentityNumbers=
             let hasPlus = v.Value.Contains("+")
             let prefix = 
                 match df,pt with
-                | Short,Normal -> 
+                | Short,_ -> 
                     let d = date value
                     let century = 
                         if  d> System.DateTime.Now then 
@@ -69,7 +69,6 @@ module PersonalIdentityNumbers=
                         (century - 1).ToString() 
                     else 
                         century.ToString()
-                | Short,Deceased_in_1947_1967 -> "19"//wrong
                 | Full ,_ -> ""
 
             Choice1Of2 {PIN= prefix+value }

@@ -5,9 +5,6 @@ open SweIdNum
 open SweIdNum.PersonalIdentityNumbers
 open Helpers
 
-let toString (pin:PersonalIdentityNumber)=
-    pin.PIN
-
 [<Fact>]
 let numeric_YYYYMMDDNNNC ()=
     parseNumeric 196408233234L |> successFull |> toString |> should equal "196408233234"

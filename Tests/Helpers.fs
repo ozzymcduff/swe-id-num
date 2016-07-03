@@ -9,4 +9,10 @@ let unSuccessFull  parsed=
     | Choice1Of2 v-> failwithf "%A" v
     | Choice2Of2 e->e
 
+open SweIdNum
+
+let toString (pin:PersonalIdentityNumber)=
+    pin.PIN
+
+
 
