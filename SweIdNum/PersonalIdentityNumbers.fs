@@ -91,7 +91,7 @@ module PersonalIdentityNumbers=
         let provider =System.Globalization.CultureInfo.InvariantCulture
         DateTime.ParseExact(pin.PIN.Substring(0,8), "yyyyMMdd", provider)
 
-    [<CompiledName("GetDate")>]
+    [<CompiledName("GetControlNumber")>]
     let getControlNumber (pin:PersonalIdentityNumber) = 
         pin.PIN.Substring(8,4)
 
