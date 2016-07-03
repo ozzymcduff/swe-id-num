@@ -17,7 +17,11 @@ open SweIdNum
 [<Theory>]
 [<XData()>]
 let FormatPin value =
-    let pin = PersonalIdentityNumber(value)
-    pin |> PersonalIdentityNumbers.format "%N" |> should equal "1212"
-    pin |> PersonalIdentityNumbers.format "%P" |> should equal "(19) 12-12-12 - 1212"
-    pin |> PersonalIdentityNumbers.format "%Y-%m-%d-%N" |> should equal "1912-12-12-1212"
+    let maybePin = PersonalIdentityNumbers.parse(value)
+    match maybePin with 
+    | Choice1Of2 pin->
+        pin |> PersonalIdentityNumbers.format "%N" |> should equal "1212"
+        pin |> PersonalIdentityNumbers.format "%P" |> should equal "(19) 12-12-12 - 1212"
+        pin |> PersonalIdentityNumbers.format "%Y-%m-%d-%N" |> should equal "1912-12-12-1212"
+    | Choice2Of2 e->
+        failwithf "%A" e
