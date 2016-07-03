@@ -40,6 +40,7 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="Luhn.fs" />
     <Compile Include="PersonalIdentityNumbers.fs" />
     <Compile Include="OrganizationalIdentityNumbers.fs" />
     <Compile Include="Script.fsx" />

@@ -94,6 +94,14 @@ module PersonalIdentityNumbers=
     let getControlNumber (pin:PersonalIdentityNumber) = 
         pin.PIN.Substring(8,4)
 
+    [<CompiledName("Control")>]
+    let control (pin:PersonalIdentityNumber)=
+        let valid_luhn = Luhn.is_luhn_valid(Int64.Parse( pin.PIN.Substring(2,10)))
+        let date = getDate pin
+        let atx = Regex("*[ATX]$")
+        let old_pin_format = date.Year<=1967 && atx.IsMatch(pin.PIN)
+        valid_luhn || old_pin_format
+
     [<CompiledName("ToString")>]
     let toString (format:string) (pin:PersonalIdentityNumber) = 
         let date = getDate pin

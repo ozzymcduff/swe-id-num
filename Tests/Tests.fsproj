@@ -42,8 +42,10 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="test_data.fs" />
     <Compile Include="Helpers.fs" />
+    <Compile Include="TestLuhn.fs" />
     <Compile Include="TestFormatPin.fs" />
     <Compile Include="TestParsePin.fs" />
+    <Compile Include="TestParseOin.fs" />
     <Compile Include="Script.fsx" />
     <None Include="paket.references" />
     <None Include="TestData\test_pin_skatteverket.csv">
