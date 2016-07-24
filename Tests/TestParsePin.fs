@@ -2,8 +2,9 @@
 open Xunit
 open FsUnit.Xunit
 open SweIdNum
-open SweIdNum.Core.PersonalIdentityNumber
+open SweIdNum.Core.PersonalIdentityNumbers
 open Helpers
+let toString (pin:PersonalIdentityNumber)=pin.PIN
 
 [<Fact>]
 let numeric_YYYYMMDDNNNC ()=
@@ -18,18 +19,18 @@ let numeric_YYMMDDNNNC ()=
 
 [<Fact>]
 let character_YYMMDDNNNC ()=
-    parse "6408233234" |> successFull |> toString |> should equal "196408233234"
-    parse "0008230000" |> successFull |> toString |> should equal "200008230000"
+    tryParse "6408233234" |> successFull |> toString |> should equal "196408233234"
+    tryParse "0008230000" |> successFull |> toString |> should equal "200008230000"
 
 [<Fact>]
 let character_YYYYMMDDNNNC ()=
-    parse "196408233234" |> successFull |> toString |> should equal "196408233234"
+    tryParse "196408233234" |> successFull |> toString |> should equal "196408233234"
 
 [<Fact>]
 let desc_different_formats ()=
     let pins = 
         ["19640823-3234";"196408233234"; "640823-3234"; "19640823-3234"; "6408233234"] 
-        |> List.map parse
+        |> List.map tryParse
         |> List.map successFull
         |> List.map toString
         |> Set.ofList
@@ -37,14 +38,14 @@ let desc_different_formats ()=
 
 [<Fact>]
 let ``character_YYMMDD-NNNC`` ()=
-    parse "640823-3234" |> successFull |> toString |> should equal "196408233234"
-    parse "000823-0000" |> successFull |> toString |> should equal "200008230000"
-    parse "000823+0000" |> successFull |> toString |> should equal "190008230000"
+    tryParse "640823-3234" |> successFull |> toString |> should equal "196408233234"
+    tryParse "000823-0000" |> successFull |> toString |> should equal "200008230000"
+    tryParse "000823+0000" |> successFull |> toString |> should equal "190008230000"
 
 [<Fact>]
 let ``error expected`` ()=
-    parse "AA6408233234" |> unSuccessFull |> should equal DoesNotMatchFormat
-    parse "196418233234" |> unSuccessFull |> should equal DoesNotMatchFormat
+    tryParse "AA6408233234" |> unSuccessFull |> should equal DoesNotMatchFormat
+    tryParse "196418233234" |> unSuccessFull |> should equal DoesNotMatchFormat
 
 //[<Fact>]
 let ``Recycling rules`` ()=
@@ -61,14 +62,14 @@ test_that("Recycling rules", {
 
 [<Fact>]
 let ``deceased 1947 - 1967`` ()=
-    parse "550504333A" |> successFull |> toString |> should equal "19550504333A"
-    parse "19280118123X" |> successFull |> toString |> should equal "19280118123X"
-    parse "19280118123 " |> successFull |> toString |> should equal "19280118123 "
+    tryParse "550504333A" |> successFull |> toString |> should equal "19550504333A"
+    tryParse "19280118123X" |> successFull |> toString |> should equal "19280118123X"
+    tryParse "19280118123 " |> successFull |> toString |> should equal "19280118123 "
 
 [<Fact>]
 let ``deceased 1947 - 1967 born in the 18 hundreds`` ()=
-    parse "850504111T" |> unSuccessFull |> should equal DoesNotMatchFormat
-    parse "850504111 " |> unSuccessFull |> should equal DoesNotMatchFormat
+    tryParse "850504111T" |> unSuccessFull |> should equal DoesNotMatchFormat
+    tryParse "850504111 " |> unSuccessFull |> should equal DoesNotMatchFormat
 
     (*
   expect_message(as.pin(semi_pins[1]), "less than 100 years old and people with birth year")

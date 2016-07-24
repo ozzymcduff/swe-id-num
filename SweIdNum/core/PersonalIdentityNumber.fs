@@ -2,8 +2,10 @@
 open System.Text.RegularExpressions
 open System
 open SweIdNum
+open System.Runtime.CompilerServices
 
-module PersonalIdentityNumber=
+[<Extension>]
+module PersonalIdentityNumbers=
     type DateFormat=
         | Short
         | Full
@@ -11,7 +13,7 @@ module PersonalIdentityNumber=
         | Normal
         | Deceased_in_1947_1967
 
-    let formats = 
+    let private formats = 
         [
         //format 1: "YYYYMMDDNNNC"
         //format 2: "YYYYMMDD-NNNC"
@@ -29,12 +31,17 @@ module PersonalIdentityNumber=
         ]
     type ParseMessage=
         | DoesNotMatchFormat
-    let minusOrPlus = Regex("[+-]")
-    let centuryOfDate (v:DateTime)=
+    type ParseException(msg:ParseMessage)=
+        inherit Exception(msg.ToString())
+
+        member this.Message = msg
+
+    let private minusOrPlus = Regex("[+-]")
+    let private centuryOfDate (v:DateTime)=
         (v.Year/100)
 
-    [<CompiledName("Parse")>]
-    let parse (pin:string) : Choice<PersonalIdentityNumber, ParseMessage>=
+    [<CompiledName("TryParse")>]
+    let tryParse (pin:string) : Choice<PersonalIdentityNumber, ParseMessage>=
         let matchFormat (format:Regex*'a*'b)=
             let r,a,b=format
             let m = r.Match(pin)
@@ -43,7 +50,7 @@ module PersonalIdentityNumber=
             else
                 None
 
-        let replaceMinusAndPlus (v)=
+        let replaceMinusAndPlus v=
             minusOrPlus.Replace(v, "")
 
         let maybeM = formats |> List.tryPick matchFormat 
@@ -75,25 +82,34 @@ module PersonalIdentityNumber=
         | None ->
             Choice2Of2 DoesNotMatchFormat
 
+    [<CompiledName("Parse")>]
+    let parse (pin:string) : PersonalIdentityNumber=
+        match tryParse pin with
+        | Choice1Of2 pin->pin
+        | Choice2Of2 err->raise (ParseException err)
+
     [<CompiledName("ParseNumeric")>]
     let parseNumeric (pin:int64)=
-        parse (pin.ToString("0000000000"))
+        tryParse (pin.ToString("0000000000"))
 
     [<CompiledName("IsValid")>]
     let isValid (pin:string)= 
-        match parse pin with
+        match tryParse pin with
         | Choice1Of2 _-> true
         | _ -> false
 
+    [<Extension>]
     [<CompiledName("GetDate")>]
     let getDate (pin:PersonalIdentityNumber) = 
         let provider =System.Globalization.CultureInfo.InvariantCulture
         DateTime.ParseExact(pin.PIN.Substring(0,8), "yyyyMMdd", provider)
 
+    [<Extension>]
     [<CompiledName("GetControlNumber")>]
     let getControlNumber (pin:PersonalIdentityNumber) = 
         pin.PIN.Substring(8,4)
 
+    [<Extension>]
     [<CompiledName("Control")>]
     let control (pin:PersonalIdentityNumber)=
         let valid_luhn = Luhn.is_luhn_valid(Int64.Parse( pin.PIN.Substring(2,10)))
@@ -102,8 +118,8 @@ module PersonalIdentityNumber=
         let old_pin_format = date.Year<=1967 && atx.IsMatch(pin.PIN)
         valid_luhn || old_pin_format
 
-    [<CompiledName("ToString")>]
-    let toString (format:string) (pin:PersonalIdentityNumber) = 
+    [<CompiledName("Format")>]
+    let format (format:string) (pin:PersonalIdentityNumber)= 
         let date = getDate pin
         let replacements = [
             "P", (fun ()->"(cc) yy-mm-dd - NNNC")
@@ -124,3 +140,10 @@ module PersonalIdentityNumber=
             else
                 ()
         result
+    
+    let private formatPin = format
+
+    [<Extension>]
+    [<CompiledName("ToString")>]
+    let toString (pin:PersonalIdentityNumber, format:string) = 
+        formatPin format pin
