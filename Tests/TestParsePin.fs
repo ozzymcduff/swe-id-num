@@ -2,7 +2,7 @@
 open Xunit
 open FsUnit.Xunit
 open SweIdNum
-open SweIdNum.PersonalIdentityNumbers
+open SweIdNum.Core.PersonalIdentityNumber
 open Helpers
 
 [<Fact>]

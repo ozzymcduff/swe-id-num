@@ -1,9 +1,9 @@
-﻿namespace SweIdNum
+﻿namespace SweIdNum.Core
 open System.Text.RegularExpressions
-
-type PersonalIdentityNumber={PIN:string}
 open System
-module PersonalIdentityNumbers=
+open SweIdNum
+
+module PersonalIdentityNumber=
     type DateFormat=
         | Short
         | Full

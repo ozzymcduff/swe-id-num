@@ -2,7 +2,7 @@
 
 open Xunit
 open FsUnit.Xunit
-open Luhn
+open SweIdNum.Core.Luhn
 
 [<Fact>]
 let ``1 pin works`` () =

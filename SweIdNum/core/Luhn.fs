@@ -1,4 +1,4 @@
-﻿module Luhn
+﻿module SweIdNum.Core.Luhn
 open System
 //https://en.wikipedia.org/wiki/Luhn_algorithm
 let digits_of(number)=
