@@ -1,0 +1,9 @@
+sudo: false
+language: csharp 
+
+solution: ./SweIdNum.sln
+install:
+    - sh build.sh install 
+
+script: 
+    - sh build.sh test

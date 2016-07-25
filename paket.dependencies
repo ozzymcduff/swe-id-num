@@ -7,3 +7,4 @@ nuget FSharp.Core
 nuget FSharp.Data 
 nuget FsUnit.xUnit 
 nuget xunit 
+nuget FAKE
