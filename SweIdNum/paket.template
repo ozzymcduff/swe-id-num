@@ -1,0 +1,10 @@
+﻿type project
+id SweIdNum
+version 0.2.0
+authors Oskar Gewalli
+description
+    Validate swedish identity numbers
+tags
+    personnummer organisationsnummer
+licenseurl http://opensource.org/licenses/MIT
+
