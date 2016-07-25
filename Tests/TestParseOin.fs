@@ -5,11 +5,14 @@ open SweIdNum
 open SweIdNum.Core.OrganizationalIdentityNumbers
 open Helpers
 
+let toStringOfSuccessFullParse v : string=
+    tryParse v |> successFull |> toString 
+
 [<Fact>]
 let ``character_GNNNNNN-NNNC`` ()=
-    tryParse "556000-4615" |> successFull |> toString |> should equal "556000-4615"
-    tryParse "232100-0156" |> successFull |> toString |> should equal "232100-0156"
-    tryParse "802002-4280" |> successFull |> toString |> should equal "802002-4280"
+    toStringOfSuccessFullParse "556000-4615" |> should equal "556000-4615"
+    toStringOfSuccessFullParse "232100-0156" |> should equal "232100-0156"
+    toStringOfSuccessFullParse "802002-4280" |> should equal "802002-4280"
 
 [<Fact>]
 let ``error expected`` ()=

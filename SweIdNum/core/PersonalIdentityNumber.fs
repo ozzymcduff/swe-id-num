@@ -6,10 +6,10 @@ open System.Runtime.CompilerServices
 
 [<Extension>]
 module PersonalIdentityNumbers=
-    type DateFormat=
+    type private DateFormat=
         | Short
         | Full
-    type PinType=
+    type private PinType=
         | Normal
         | Deceased_in_1947_1967
 
@@ -29,19 +29,13 @@ module PersonalIdentityNumbers=
         // format 8: "YYMMDDNNNC"
         (Regex("^([0-5][0-9]|6[0-6])(0[1-9]|1[0-2])([06][1-9]|[1278][0-9]|[39][0-1])[-+]?[0-9]{3}[ATX ]$"), Short, Deceased_in_1947_1967)
         ]
-    type ParseMessage=
-        | DoesNotMatchFormat
-    type ParseException(msg:ParseMessage)=
-        inherit Exception(msg.ToString())
-
-        member this.Message = msg
 
     let private minusOrPlus = Regex("[+-]")
     let private centuryOfDate (v:DateTime)=
         (v.Year/100)
 
-    [<CompiledName("TryParse")>]
-    let tryParse (pin:string) : Choice<PersonalIdentityNumber, ParseMessage>=
+    [<CompiledName("FSharpTryParse")>]
+    let tryParse (pin:string) =
         let matchFormat (format:Regex*'a*'b)=
             let r,a,b=format
             let m = r.Match(pin)
@@ -83,12 +77,21 @@ module PersonalIdentityNumbers=
             Choice2Of2 DoesNotMatchFormat
 
     [<CompiledName("Parse")>]
-    let parse (pin:string) : PersonalIdentityNumber=
+    let parse (pin:string) =
         match tryParse pin with
         | Choice1Of2 pin->pin
         | Choice2Of2 err->raise (ParseException err)
 
-    [<CompiledName("ParseNumeric")>]
+    [<CompiledName("TryParse")>]
+    let chsarpTryParse (pin:string, [<System.Runtime.InteropServices.Out>]value:PersonalIdentityNumber byref) : bool=
+        match tryParse pin with
+        | Choice1Of2 pin -> 
+            value<-pin
+            true
+        | Choice2Of2 err -> 
+            false
+
+    [<CompiledName("FsharpTryParseNumeric")>]
     let parseNumeric (pin:int64)=
         tryParse (pin.ToString("0000000000"))
 

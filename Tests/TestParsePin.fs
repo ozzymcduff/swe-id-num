@@ -4,7 +4,6 @@ open FsUnit.Xunit
 open SweIdNum
 open SweIdNum.Core.PersonalIdentityNumbers
 open Helpers
-let toString (pin:PersonalIdentityNumber)=pin.PIN
 
 [<Fact>]
 let numeric_YYYYMMDDNNNC ()=
