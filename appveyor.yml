@@ -1,2 +1,4 @@
 build_script:
   - build.cmd build
+test_script:
+  - cmd: build.cmd test_only

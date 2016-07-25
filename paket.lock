@@ -19,3 +19,5 @@ NUGET
       xunit.abstractions (2.0)
     xunit.extensibility.execution (2.1)
       xunit.extensibility.core (2.1)
+  remote: https://dotnet.myget.org/F/dotnet-core
+    xunit.runner.console (2.1.0)
