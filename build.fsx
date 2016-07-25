@@ -23,14 +23,16 @@ Target "build_release" (fun _ ->
     |> ignore
 )
 
-Target "test_only" (fun _ ->  
+let test ()=
     !! (Path.Combine(testDir, "*Tests*.dll"))
         |> xUnit2 (fun p -> 
             {p with
                 ShadowCopy = false; 
                 HtmlOutputPath = Some(testDir + "TestResults.xml")
             })
-)
+
+
+Target "test_only" (fun _ ->  test() )
 
 Target "pack" (fun _ ->
     Paket.Pack(fun p ->
@@ -49,16 +51,12 @@ Target "push" (fun _ ->
 )
 
 Target "install" DoNothing
-Target "test" DoNothing
+Target "test" (fun _ ->  test() )
 
 "build_release"
     ==> "pack"
 
-"test_only"
-    ==> "test"
-
 "build"
     ==> "test"
-
 
 RunTargetOrDefault "build"
