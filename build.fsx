@@ -32,8 +32,6 @@ Target "test_only" (fun _ ->
             })
 )
 
-Target "test" (fun _ -> ())
-
 Target "pack" (fun _ ->
     Paket.Pack(fun p ->
         { p with
@@ -50,8 +48,8 @@ Target "push" (fun _ ->
             WorkingDir = libDir })
 )
 
-
 Target "install" DoNothing
+Target "test" DoNothing
 
 "build_release"
     ==> "pack"
