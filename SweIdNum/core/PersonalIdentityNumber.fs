@@ -33,6 +33,23 @@ module PersonalIdentityNumbers=
     let private minusOrPlus = Regex("[+-]")
     let private centuryOfDate (v:DateTime)=
         (v.Year/100)
+    
+    [<Extension>]
+    [<CompiledName("GetDate")>]
+    let getDate (pin:PersonalIdentityNumber) = 
+        let provider =System.Globalization.CultureInfo.InvariantCulture
+        DateTime.ParseExact(pin.PIN.Substring(0,8), "yyyyMMdd", provider)
+
+    let private atx = Regex(".+[ATX ]$")
+    /// Additional formats for old "pins" for people deceased 1947 - 1967 (i.e. ctrl numbr is missing/replaced with A,T, X or space)
+    [<Extension>]
+    [<CompiledName("OldFormat")>]
+    let oldFormat (pin:PersonalIdentityNumber)=
+        let date = getDate pin
+        date.Year<=1967 && atx.IsMatch(pin.PIN)
+        
+    let private control (pin:PersonalIdentityNumber)=
+        oldFormat pin || Luhn.is_luhn_valid( pin.PIN.Substring(2,10) )
 
     [<CompiledName("FSharpTryParse")>]
     let tryParse (pin:string) =
@@ -71,8 +88,13 @@ module PersonalIdentityNumbers=
                     else 
                         century.ToString()
                 | Full ,_ -> ""
-
-            Choice1Of2 {PIN= prefix+value }
+            let pin = {PIN= prefix+value }
+            if not (control pin) then
+                let checksum = Luhn.calculate_luhn ( pin.PIN.Substring(2,9))
+                let actual = Int32.Parse (pin.PIN.Substring(pin.PIN.Length-1,1))
+                Choice2Of2 (InvalidChecksum (expected=checksum, actual=actual))
+            else 
+                Choice1Of2 pin
         | None ->
             Choice2Of2 DoesNotMatchFormat
 
@@ -80,7 +102,7 @@ module PersonalIdentityNumbers=
     let parse (pin:string) =
         match tryParse pin with
         | Choice1Of2 pin->pin
-        | Choice2Of2 err->raise (ParseException err)
+        | Choice2Of2 err->raise (ParseMessage.toException err)
 
     [<CompiledName("TryParse")>]
     let chsarpTryParse (pin:string, [<System.Runtime.InteropServices.Out>]value:PersonalIdentityNumber byref) : bool=
@@ -102,24 +124,9 @@ module PersonalIdentityNumbers=
         | _ -> false
 
     [<Extension>]
-    [<CompiledName("GetDate")>]
-    let getDate (pin:PersonalIdentityNumber) = 
-        let provider =System.Globalization.CultureInfo.InvariantCulture
-        DateTime.ParseExact(pin.PIN.Substring(0,8), "yyyyMMdd", provider)
-
-    [<Extension>]
     [<CompiledName("GetControlNumber")>]
     let getControlNumber (pin:PersonalIdentityNumber) = 
         pin.PIN.Substring(8,4)
-
-    [<Extension>]
-    [<CompiledName("Control")>]
-    let control (pin:PersonalIdentityNumber)=
-        let valid_luhn = Luhn.is_luhn_valid(Int64.Parse( pin.PIN.Substring(2,10)))
-        let date = getDate pin
-        let atx = Regex("*[ATX]$")
-        let old_pin_format = date.Year<=1967 && atx.IsMatch(pin.PIN)
-        valid_luhn || old_pin_format
 
     [<CompiledName("Format")>]
     let format (format:string) (pin:PersonalIdentityNumber)= 

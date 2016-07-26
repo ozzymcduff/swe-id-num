@@ -13,15 +13,24 @@ module OrganizationalIdentityNumbers=
 
     let private minus = Regex("[-]")
     let private replaceMinus v= minus.Replace(v, "")
+    let private control (pin:OrganizationalIdentityNumber)=
+        let valid_luhn = Luhn.is_luhn_valid(replaceMinus pin.OIN)
+        valid_luhn
 
     [<CompiledName("FSharpTryParse")>]
     let tryParse (pin:string)=
 
         let m = formats.Match pin
         if m.Success then
-            Choice1Of2 {OIN= String.Join("-", [| m.Groups.[1].Value; m.Groups.[2].Value |])}
+            let oin = {OIN= String.Join("-", [| m.Groups.[1].Value; m.Groups.[2].Value |])}
+            if not (control oin) then
+                let checksum = Luhn.calculate_luhn (replaceMinus( oin.OIN.Substring(0,oin.OIN.Length-1)))
+                let actual = Int32.Parse (oin.OIN.Substring(oin.OIN.Length-1,1))
+                Choice2Of2 (InvalidChecksum (expected=checksum, actual=actual))
+            else
+                Choice1Of2 oin
         else
-            Choice2Of2 DoesNotMatchFormat
+            Choice2Of2 DoesNotMatchFormat 
 
     [<CompiledName("TryParse")>]
     let chsarpTryParse (pin:string, [<System.Runtime.InteropServices.Out>]value:OrganizationalIdentityNumber byref) : bool=
@@ -36,7 +45,7 @@ module OrganizationalIdentityNumbers=
     let parse (pin:string) =
         match tryParse pin with
         | Choice1Of2 pin->pin
-        | Choice2Of2 err->raise (ParseException err)
+        | Choice2Of2 err->raise (ParseMessage.toException err)
 
     [<CompiledName("IsValid")>]
     let isValid (pin:string)= 
@@ -44,8 +53,3 @@ module OrganizationalIdentityNumbers=
         | Choice1Of2 _-> true
         | _ -> false
 
-    [<Extension>]
-    [<CompiledName("Control")>]
-    let control (pin:OrganizationalIdentityNumber)=
-        let valid_luhn = Luhn.is_luhn_valid(Int64.Parse(replaceMinus pin.OIN))
-        valid_luhn

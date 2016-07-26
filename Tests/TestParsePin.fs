@@ -8,18 +8,18 @@ open Helpers
 [<Fact>]
 let numeric_YYYYMMDDNNNC ()=
     parseNumeric 196408233234L |> successFull |> toString |> should equal "196408233234"
-    parseNumeric 200108230000L |> successFull |> toString |> should equal "200108230000"
+    parseNumeric 200108230004L |> successFull |> toString |> should equal "200108230004"
 
 [<Fact>]
 let numeric_YYMMDDNNNC ()=
     parseNumeric 6408233234L |> successFull |> toString |> should equal "196408233234"
-    parseNumeric 108230000L |> successFull |> toString |> should equal "200108230000"
-    parseNumeric 8230000L |> successFull |> toString |> should equal "200008230000"
+    parseNumeric 108230004L |> successFull |> toString |> should equal "200108230004"
+    parseNumeric 8230005L |> successFull |> toString |> should equal "200008230005"
 
 [<Fact>]
 let character_YYMMDDNNNC ()=
     tryParse "6408233234" |> successFull |> toString |> should equal "196408233234"
-    tryParse "0008230000" |> successFull |> toString |> should equal "200008230000"
+    tryParse "0008230005" |> successFull |> toString |> should equal "200008230005"
 
 [<Fact>]
 let character_YYYYMMDDNNNC ()=
@@ -38,8 +38,8 @@ let desc_different_formats ()=
 [<Fact>]
 let ``character_YYMMDD-NNNC`` ()=
     tryParse "640823-3234" |> successFull |> toString |> should equal "196408233234"
-    tryParse "000823-0000" |> successFull |> toString |> should equal "200008230000"
-    tryParse "000823+0000" |> successFull |> toString |> should equal "190008230000"
+    tryParse "000823-0005" |> successFull |> toString |> should equal "200008230005"
+    tryParse "000823+0005" |> successFull |> toString |> should equal "190008230005"
 
 [<Fact>]
 let ``error expected`` ()=
