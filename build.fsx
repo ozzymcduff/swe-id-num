@@ -59,4 +59,4 @@ Target "test" (fun _ ->  test() )
 "build"
     ==> "test"
 
-RunTargetOrDefault "build"
+RunTargetOrDefault "test"

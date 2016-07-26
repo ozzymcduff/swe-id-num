@@ -11,6 +11,7 @@ let toStringOfSuccessFullParse v : string=
 [<Fact>]
 let ``character_GNNNNNN-NNNC`` ()=
     toStringOfSuccessFullParse "556000-4615" |> should equal "556000-4615"
+    toStringOfSuccessFullParse "5560004615" |> should equal "556000-4615"
     toStringOfSuccessFullParse "232100-0156" |> should equal "232100-0156"
     toStringOfSuccessFullParse "802002-4280" |> should equal "802002-4280"
 

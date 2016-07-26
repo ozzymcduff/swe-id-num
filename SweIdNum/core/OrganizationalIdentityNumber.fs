@@ -9,7 +9,7 @@ module OrganizationalIdentityNumbers=
     let private formats = 
         //format 1: "NNNNNN-NNNC"
         //format 2: "NNNNNNNNNC"
-        Regex("^[0-9]{2}[2-9]{1}[0-9]{3}-?[0-9]{4}$")
+        Regex("^([0-9]{2}[2-9]{1}[0-9]{3})-?([0-9]{4})$")
 
     let private minus = Regex("[-]")
     let private replaceMinus v= minus.Replace(v, "")
@@ -19,7 +19,7 @@ module OrganizationalIdentityNumbers=
 
         let m = formats.Match pin
         if m.Success then
-            Choice1Of2 {OIN= m.Value}
+            Choice1Of2 {OIN= String.Join("-", [| m.Groups.[1].Value; m.Groups.[2].Value |])}
         else
             Choice2Of2 DoesNotMatchFormat
 
