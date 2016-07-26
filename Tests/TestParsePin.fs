@@ -1,4 +1,4 @@
-﻿module TestParse
+﻿module TestParsePin
 open Xunit
 open FsUnit.Xunit
 open SweIdNum
