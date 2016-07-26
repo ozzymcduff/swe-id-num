@@ -54,7 +54,9 @@ Target "install" DoNothing
 Target "test" (fun _ ->  test() )
 
 "build_release"
+    ==> "clean"
     ==> "pack"
+    ==> "push"
 
 "build"
     ==> "test"
