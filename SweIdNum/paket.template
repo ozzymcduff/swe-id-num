@@ -1,13 +1,13 @@
 ﻿type project
 id SweIdNum
-version 0.2.2
+version 1.0.0
 authors Oskar Gewalli
 description
     Validate swedish identity numbers
 tags
     personnummer organisationsnummer
 releaseNotes
-    Bugfix: OrganizatioalIdentityNumbers was not normalized on parse
+    Validates Luhn checksum on parse.
 projectUrl https://github.com/wallymathieu/swe-id-num
 licenseurl http://opensource.org/licenses/MIT
 
