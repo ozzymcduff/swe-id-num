@@ -24,7 +24,7 @@ Target "build_release" (fun _ ->
 )
 
 let test ()=
-    !! (Path.Combine(testDir, "*Tests*.dll"))
+    !! (Path.Combine("**", "bin", "Debug", "*Tests*.dll"))
         |> xUnit2 (fun p -> 
             {p with
                 ShadowCopy = false; 

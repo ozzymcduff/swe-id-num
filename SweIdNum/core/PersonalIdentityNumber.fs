@@ -17,17 +17,17 @@ module PersonalIdentityNumbers=
         [
         //format 1: "YYYYMMDDNNNC"
         //format 2: "YYYYMMDD-NNNC"
-        (Regex("^(18|19|20)[0-9]{2}(0[1-9]|1[0-2])([06][1-9]|[1278][0-9]|[39][0-1])[-]?[0-9]{4}$"), Full, Normal)
+        (Regex("^(18|19|20)[0-9]{2}(0[1-9]|1[0-2])([06][1-9]|[1278][0-9]|[39][0-1])[-]?[0-9]{4}$",RegexOptions.IgnorePatternWhitespace), Full, Normal)
         //format 3: "YYMMDD-NNNC"
         //format 4: "YYMMDDNNNC"
-        (Regex("^[0-9]{2}(0[1-9]|1[0-2])([06][1-9]|[1278][0-9]|[39][0-1])[-+]?[0-9]{4}$"), Short, Normal)
+        (Regex("^[0-9]{2}(0[1-9]|1[0-2])([06][1-9]|[1278][0-9]|[39][0-1])[-+]?[0-9]{4}$",RegexOptions.IgnorePatternWhitespace), Short, Normal)
         // Additional formats for old "pins" for people deceased 1947 - 1967 (i.e. ctrl numbr is missing/replaced with A,T or X)
         //format 5: "YYYYMMDDNNNC"
         // format 6: "YYYYMMDD-NNNC"
-        (Regex("^(18[0-9]{2}|19([0-5][0-9]|6[0-6]))(0[1-9]|1[0-2])([06][1-9]|[1278][0-9]|[39][0-1])[-]?[0-9]{3}[ATX ]$"), Full, Deceased_in_1947_1967)
+        (Regex("^(18[0-9]{2}|19([0-5][0-9]|6[0-6]))(0[1-9]|1[0-2])([06][1-9]|[1278][0-9]|[39][0-1])[-]?[0-9]{3}[ATX ]$",RegexOptions.IgnorePatternWhitespace), Full, Deceased_in_1947_1967)
         //format 7: "YYMMDD-NNNC"
         // format 8: "YYMMDDNNNC"
-        (Regex("^([0-5][0-9]|6[0-6])(0[1-9]|1[0-2])([06][1-9]|[1278][0-9]|[39][0-1])[-+]?[0-9]{3}[ATX ]$"), Short, Deceased_in_1947_1967)
+        (Regex("^([0-5][0-9]|6[0-6])(0[1-9]|1[0-2])([06][1-9]|[1278][0-9]|[39][0-1])[-+]?[0-9]{3}[ATX ]$",RegexOptions.IgnorePatternWhitespace), Short, Deceased_in_1947_1967)
         ]
 
     let private minusOrPlus = Regex("[+-]")
@@ -127,6 +127,16 @@ module PersonalIdentityNumbers=
     [<CompiledName("GetControlNumber")>]
     let getControlNumber (pin:PersonalIdentityNumber) = 
         pin.PIN.Substring(8,4)
+
+    [<Extension>]
+    [<CompiledName("IsFemale")>]
+    let isFemale (pin:PersonalIdentityNumber) = 
+        System.Int16.Parse( pin.PIN.Substring(pin.PIN.Length-2,1))% 2s = 0s
+
+    [<Extension>]
+    [<CompiledName("IsMale")>]
+    let isMale (pin:PersonalIdentityNumber) = 
+        not (isFemale pin)
 
     [<CompiledName("Format")>]
     let format (format:string) (pin:PersonalIdentityNumber)= 
