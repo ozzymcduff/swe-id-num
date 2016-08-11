@@ -1,13 +1,13 @@
 ﻿type project
 id SweIdNum
-version 1.0.0
+version 1.1.0
 authors Oskar Gewalli
 description
     Validate swedish identity numbers
 tags
     personnummer organisationsnummer
 releaseNotes
-    Validates Luhn checksum on parse.
+    Added isMale, isFemale.
 projectUrl https://github.com/wallymathieu/swe-id-num
 licenseurl http://opensource.org/licenses/MIT
 
