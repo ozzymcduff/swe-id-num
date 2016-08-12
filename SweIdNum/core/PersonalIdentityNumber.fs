@@ -128,11 +128,13 @@ module PersonalIdentityNumbers=
     let getControlNumber (pin:PersonalIdentityNumber) = 
         pin.PIN.Substring(8,4)
 
+    /// According to the pin the legal gender is considered to be female
     [<Extension>]
     [<CompiledName("IsFemale")>]
     let isFemale (pin:PersonalIdentityNumber) = 
         System.Int16.Parse( pin.PIN.Substring(pin.PIN.Length-2,1))% 2s = 0s
 
+    /// According to the pin the legal gender is considered to be male
     [<Extension>]
     [<CompiledName("IsMale")>]
     let isMale (pin:PersonalIdentityNumber) = 
