@@ -1,13 +1,13 @@
 ﻿type project
 id SweIdNum
-version 1.1.0
+version 2.0.0
 authors Oskar Gewalli
 description
     Validate swedish identity numbers
 tags
     personnummer organisationsnummer
 releaseNotes
-    Added isMale, isFemale.
+    Removed getControlNumber (since it was misleading)
 projectUrl https://github.com/wallymathieu/swe-id-num
 licenseurl http://opensource.org/licenses/MIT
 

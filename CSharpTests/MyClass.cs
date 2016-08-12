@@ -11,8 +11,7 @@ namespace CSharpTests
             var x = PersonalIdentityNumbers.Parse("196408233234");
             string p = x.ToString("P");
             DateTime d =x.GetDate();
-            string n = x.GetControlNumber();
-            Console.WriteLine("{0} {1} {2}", p, d, n);
+            Console.WriteLine("{0} {1}", p, d);
             if (PersonalIdentityNumbers.TryParse("196408233234", out x)) 
             {
             }

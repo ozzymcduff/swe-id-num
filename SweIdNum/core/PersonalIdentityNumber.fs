@@ -123,11 +123,6 @@ module PersonalIdentityNumbers=
         | Choice1Of2 _-> true
         | _ -> false
 
-    [<Extension>]
-    [<CompiledName("GetControlNumber")>]
-    let getControlNumber (pin:PersonalIdentityNumber) = 
-        pin.PIN.Substring(8,4)
-
     /// According to the pin the legal gender is considered to be female
     [<Extension>]
     [<CompiledName("IsFemale")>]
@@ -150,7 +145,7 @@ module PersonalIdentityNumbers=
             "cc", (fun ()->(centuryOfDate date).ToString())
             "mm", (fun ()->date.ToString("MM"))
             "dd", (fun ()->date.ToString("dd"))
-            "NNNC", (fun ()->getControlNumber pin)
+            "NNNC", (fun ()->pin.PIN.Substring(8,4))
         ]
         let mutable result =format
         for replacement in replacements do

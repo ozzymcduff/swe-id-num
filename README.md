@@ -27,7 +27,6 @@ Then you can parse swedish personal identity numbers
 try{
   var tolvansson = PersonalIdentityNumbers.Parse("121212-1212");
   var birthdate = tolvansson.GetDate();
-  var controlNumber = tolvansson.GetControlNumber();
 } catch (DoesNotMatchFormatException){
   // ...
 } catch (InvalidChecksumException){
@@ -57,7 +56,6 @@ Note that the parse below will throw an exception if you feed it an invalid valu
 ```
 let tolvansson = parse "121212-1212"
 let birthdate = getDate tolvansson 
-var controlNumber = getControlNumber tolvansson
 ```
 
 If you are unsure if it's correct and want to handle it in a more f#y way, then use tryParse 
