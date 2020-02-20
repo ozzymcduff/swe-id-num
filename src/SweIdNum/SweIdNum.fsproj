@@ -15,5 +15,6 @@
     <Compile Include="core\Luhn.fs" />
     <Compile Include="core\OrganizationalIdentityNumber.fs" />
     <Compile Include="core\PersonalIdentityNumber.fs" />
+    <Reference Condition=" '$(TargetFramework)' == 'net45'" Include="System.Runtime"/>
   </ItemGroup>
 </Project>
