@@ -1,4 +1,8 @@
+image: Visual Studio 2019
+init:
+  - git config --global core.autocrlf input
 build_script:
-  - build.cmd build
+  - cmd: dotnet build
 test_script:
-  - cmd: build.cmd test_only
+  - cmd: dotnet test test/Tests
+  - cmd: dotnet test test/CSharpTests
