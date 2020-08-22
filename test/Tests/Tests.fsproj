@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net46</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
     <GenerateProgramFile>false</GenerateProgramFile>
@@ -23,7 +23,6 @@
     </None>
     <None Include="TestData\rccvast_persnr_fejk.csv" />
     <Compile Include="Program.fs" />
-    <Content Include="App.config" Condition=" '$(TargetFramework)' == 'net46'" />
   </ItemGroup>
 
   <ItemGroup>
