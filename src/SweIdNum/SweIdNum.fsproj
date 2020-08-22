@@ -17,4 +17,7 @@
     <Compile Include="core\PersonalIdentityNumber.fs" />
     <Reference Condition=" '$(TargetFramework)' == 'net45'" Include="System.Runtime"/>
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="4.6.2" />
+  </ItemGroup>
 </Project>

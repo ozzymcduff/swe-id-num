@@ -34,7 +34,9 @@
     <PackageReference Include="coverlet.collector" Version="1.0.1" />
     <PackageReference Include="System.Runtime" Version="4.3.1" />
   </ItemGroup>
-
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="4.6.2" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\SweIdNum\SweIdNum.fsproj" />
   </ItemGroup>
