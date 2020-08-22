@@ -8,7 +8,7 @@
     <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/wallymathieu/swe-id-num</PackageProjectUrl>
     <PackageTags>personnummer organisationsnummer</PackageTags>
-    <VersionPrefix>2.0.1</VersionPrefix>
+    <VersionPrefix>3.0.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
   </PropertyGroup>
 
