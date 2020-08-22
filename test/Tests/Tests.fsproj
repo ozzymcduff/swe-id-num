@@ -23,6 +23,7 @@
     </None>
     <None Include="TestData\rccvast_persnr_fejk.csv" />
     <Compile Include="Program.fs" />
+    <Content Include="App.config" Condition=" '$(TargetFramework)' == 'net46'" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,7 +34,6 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
     <PackageReference Include="coverlet.collector" Version="1.0.1" />
     <PackageReference Include="System.Runtime" Version="4.3.1" />
-    <Reference Condition=" '$(TargetFramework)' == 'net46'" Include="System.Runtime"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="4.6.2" />
