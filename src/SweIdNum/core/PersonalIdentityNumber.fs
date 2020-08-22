@@ -49,7 +49,7 @@ module PersonalIdentityNumbers=
         date.Year<=1967 && atx.IsMatch(pin.PIN)
         
     let private control (pin:PersonalIdentityNumber)=
-        oldFormat pin || Luhn.is_luhn_valid( pin.PIN.Substring(2,10) )
+        oldFormat pin || Luhn.isLuhnValid( pin.PIN.Substring(2,10) )
 
     [<CompiledName("FSharpTryParse")>]
     let tryParse (pin:string) =
@@ -90,7 +90,7 @@ module PersonalIdentityNumbers=
                 | Full ,_ -> ""
             let pin = {PIN= prefix+value }
             if not (control pin) then
-                let checksum = Luhn.calculate_luhn ( pin.PIN.Substring(2,9))
+                let checksum = Luhn.calculateLuhn ( pin.PIN.Substring(2,9))
                 let actual = Int32.Parse (pin.PIN.Substring(pin.PIN.Length-1,1))
                 Error (InvalidChecksum (expected=checksum, actual=actual))
             else 

@@ -14,7 +14,7 @@ module OrganizationalIdentityNumbers=
     let private minus = Regex("[-]")
     let private replaceMinus v= minus.Replace(v, "")
     let private control (pin:OrganizationalIdentityNumber)=
-        let valid_luhn = Luhn.is_luhn_valid(replaceMinus pin.OIN)
+        let valid_luhn = Luhn.isLuhnValid(replaceMinus pin.OIN)
         valid_luhn
 
     [<CompiledName("FSharpTryParse")>]
@@ -24,7 +24,7 @@ module OrganizationalIdentityNumbers=
         if m.Success then
             let oin = {OIN= String.Join("-", [| m.Groups.[1].Value; m.Groups.[2].Value |])}
             if not (control oin) then
-                let checksum = Luhn.calculate_luhn (replaceMinus( oin.OIN.Substring(0,oin.OIN.Length-1)))
+                let checksum = Luhn.calculateLuhn (replaceMinus( oin.OIN.Substring(0,oin.OIN.Length-1)))
                 let actual = Int32.Parse (oin.OIN.Substring(oin.OIN.Length-1,1))
                 Error (InvalidChecksum (expected=checksum, actual=actual))
             else
