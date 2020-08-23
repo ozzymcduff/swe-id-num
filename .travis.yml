@@ -1,9 +1,11 @@
 sudo: false
 language: csharp 
+dotnet: 3.1.302
 
 solution: ./SweIdNum.sln
 install:
-    - sh build.sh install 
+    - dotnet restore ./SweIdNum.sln
 
 script: 
-    - sh build.sh test
+    - dotnet test test/Tests
+    - dotnet test test/CSharpTests

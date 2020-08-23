@@ -49,7 +49,7 @@ module PersonalIdentityNumbers=
         date.Year<=1967 && atx.IsMatch(pin.PIN)
         
     let private control (pin:PersonalIdentityNumber)=
-        oldFormat pin || Luhn.is_luhn_valid( pin.PIN.Substring(2,10) )
+        oldFormat pin || Luhn.isLuhnValid( pin.PIN.Substring(2,10) )
 
     [<CompiledName("FSharpTryParse")>]
     let tryParse (pin:string) =
@@ -90,27 +90,27 @@ module PersonalIdentityNumbers=
                 | Full ,_ -> ""
             let pin = {PIN= prefix+value }
             if not (control pin) then
-                let checksum = Luhn.calculate_luhn ( pin.PIN.Substring(2,9))
+                let checksum = Luhn.calculateLuhn ( pin.PIN.Substring(2,9))
                 let actual = Int32.Parse (pin.PIN.Substring(pin.PIN.Length-1,1))
-                Choice2Of2 (InvalidChecksum (expected=checksum, actual=actual))
+                Error (InvalidChecksum (expected=checksum, actual=actual))
             else 
-                Choice1Of2 pin
+                Ok pin
         | None ->
-            Choice2Of2 DoesNotMatchFormat
+            Error DoesNotMatchFormat
 
     [<CompiledName("Parse")>]
     let parse (pin:string) =
         match tryParse pin with
-        | Choice1Of2 pin->pin
-        | Choice2Of2 err->raise (ParseMessage.toException err)
+        | Ok pin->pin
+        | Error err->raise (ParseMessage.toException err)
 
     [<CompiledName("TryParse")>]
     let chsarpTryParse (pin:string, [<System.Runtime.InteropServices.Out>]value:PersonalIdentityNumber byref) : bool=
         match tryParse pin with
-        | Choice1Of2 pin -> 
+        | Ok pin -> 
             value<-pin
             true
-        | Choice2Of2 err -> 
+        | Error err -> 
             false
 
     [<CompiledName("FsharpTryParseNumeric")>]
@@ -120,7 +120,7 @@ module PersonalIdentityNumbers=
     [<CompiledName("IsValid")>]
     let isValid (pin:string)= 
         match tryParse pin with
-        | Choice1Of2 _-> true
+        | Ok _-> true
         | _ -> false
 
     /// According to the pin the legal gender is considered to be female

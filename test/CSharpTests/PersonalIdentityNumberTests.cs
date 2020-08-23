@@ -40,14 +40,14 @@ namespace CSharpTests
                 "121212-1220","19121212-1220"}.Select(p => new object[] { p });
         }
         [Theory,
-            MemberData("MalePersonalNumbers")]
+            MemberData(nameof(MalePersonalNumbers))]
         public void Male_personal_numbers(string personalNumber)
         {
             Assert.True(PersonalIdentityNumbers.Parse(personalNumber).IsMale());
             Assert.False(PersonalIdentityNumbers.Parse(personalNumber).IsFemale());
         }
         [Theory,
-            MemberData("FemalePersonalNumbers")]
+            MemberData(nameof(FemalePersonalNumbers))]
         public void Female_personal_numbers(string personalNumber)
         {
             Assert.False(PersonalIdentityNumbers.Parse(personalNumber).IsMale());
@@ -60,7 +60,7 @@ namespace CSharpTests
         }
 
         [Theory,
-            MemberData("ValidPersonalNumbers")]
+            MemberData(nameof(ValidPersonalNumbers))]
         public void ValidPersonalNumbers_ParsedAsValid(string personalNumber)
         {
             PersonalIdentityNumber pn;
@@ -74,7 +74,7 @@ namespace CSharpTests
         }
 
         [Theory,
-            MemberData("InvalidPersonalNumbers")]
+            MemberData(nameof(InvalidPersonalNumbers))]
         public void InvalidPersonalNumbers_ParsedAsNotValid(string personalNumber)
         {
             PersonalIdentityNumber pn;
